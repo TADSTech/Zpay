@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ZPay — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ==========================================================
+     ZPay Pitch Deck — champagne gold / ivory / ink, Rubik.
+     Flat editorial fintech. No gradients, no glow. 16:9.
+     ========================================================== */
+  :root {
+    --ink: #14110c;
+    --ink-2: #211d15;
+    --gold: #c8a24a;
+    --gold-deep: #a9862f;
+    --gold-soft: #e6d09a;
+    --gold-tint: #f2e2b8;
+    --ivory: #efe4cf;
+    --sand: #ece2cd;
+    --paper: #f7f3ea;
+    --white: #ffffff;
+    --muted: #6f6a60;
+    --muted-ink: rgba(255,255,255,0.64);
+    --line: #e2dccd;
+    --line-strong: #d3cab7;
+    --success: #2f8f5b;
+    --error: #c0483c;
+    --slide-w: 1280px;
+    --slide-h: 720px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #d8d2c4;
+    font-family: 'Rubik', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .deck {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 40px 0 64px;
+  }
+
+  .slide {
+    position: relative;
+    width: var(--slide-w);
+    height: var(--slide-h);
+    background: var(--white);
+    overflow: hidden;
+    box-shadow: 0 24px 60px -24px rgba(20,17,12,0.45);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-inner {
+    position: relative;
+    flex: 1;
+    padding: 68px 80px 72px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* --- surface variants --- */
+  .s-white { background: var(--white); }
+  .s-ivory { background: var(--ivory); }
+  .s-paper { background: var(--paper); }
+  .s-ink   { background: var(--ink); color: var(--white); }
+  .s-ink h1, .s-ink h2, .s-ink h3, .s-ink h4 { color: var(--white); }
+  .s-gold  { background: var(--gold-tint); }
+
+  h1, h2, h3, h4 { letter-spacing: -0.025em; line-height: 1.06; font-weight: 700; }
+
+  /* --- shared bits --- */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    margin-bottom: 26px;
+  }
+  .s-ink .eyebrow { color: var(--gold); }
+  .eyebrow::before {
+    content: "";
+    width: 26px; height: 2px;
+    background: var(--gold);
+  }
+
+  .headline { font-size: 52px; font-weight: 700; max-width: 20ch; }
+  .headline.big { font-size: 66px; }
+  .sub { font-size: 21px; line-height: 1.55; color: var(--muted); max-width: 60ch; }
+  .s-ink .sub { color: var(--muted-ink); }
+
+  .em { color: var(--gold-deep); }
+  .s-ink .em { color: var(--gold); }
+
+  /* --- footer / receipt line --- */
+  .foot {
+    position: absolute;
+    left: 80px; right: 80px; bottom: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+  }
+  .s-ink .foot { color: rgba(255,255,255,0.5); border-top-color: rgba(255,255,255,0.14); }
+  .s-gold .foot, .s-ivory .foot { border-top-color: var(--line-strong); }
+  .foot .brand-mini { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: inherit; }
+  .foot .brand-mini b { color: var(--ink); font-weight: 700; }
+  .s-ink .foot .brand-mini b { color: #fff; }
+  .foot .pageno { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; }
+
+  /* --- brand mark --- */
+  .zmark {
+    display: inline-grid;
+    place-items: center;
+    width: 40px; height: 40px;
+    border-radius: 11px;
+    background: var(--ink);
+    color: var(--gold);
+    font-weight: 800;
+    font-size: 22px;
+  }
+  .foot .zmark { width: 22px; height: 22px; border-radius: 6px; font-size: 13px; }
+  .s-ink .foot .zmark { background: var(--gold); color: var(--ink); }
+
+  /* ============ SLIDE 1 — COVER ============ */
+  .cover-inner { justify-content: center; }
+  .cover-brand { display: flex; align-items: center; gap: 16px; margin-bottom: 54px; }
+  .cover-brand .wordmark { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
+  .cover-kicker {
+    font-size: 14px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 22px;
+  }
+  .cover-h { font-size: 92px; font-weight: 700; line-height: 0.98; letter-spacing: -0.04em; }
+  .cover-h .em { color: var(--gold); }
+  .cover-sub { margin-top: 30px; font-size: 23px; line-height: 1.5; color: var(--muted-ink); max-width: 40ch; }
+  .cover-tag {
+    position: absolute; right: 80px; bottom: 96px;
+    text-align: right; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+  }
+  .cover-orbit {
+    position: absolute; right: -160px; top: -160px;
+    width: 620px; height: 620px; border-radius: 50%;
+    border: 1.5px solid rgba(200,162,74,0.18);
+  }
+  .cover-orbit::after {
+    content: ""; position: absolute; inset: 90px; border-radius: 50%;
+    border: 1.5px solid rgba(200,162,74,0.12);
+  }
+  .cover-chip {
+    position: absolute;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 12px 15px;
+    font-size: 14px; color: #fff; font-weight: 500;
+    backdrop-filter: blur(2px);
+  }
+  .cover-chip .tick {
+    width: 22px; height: 22px; border-radius: 6px;
+    background: var(--gold); color: var(--ink);
+    display: grid; place-items: center; flex-shrink: 0;
+  }
+  .cover-chip.c1 { top: 150px; right: 96px; }
+  .cover-chip.c2 { top: 372px; right: 190px; }
+  .cover-chip small { display: block; font-weight: 400; color: rgba(255,255,255,0.55); font-size: 12px; }
+
+  /* ============ CHAT MOCK ============ */
+  .chat {
+    background: #ece5dd;
+    border-radius: 16px;
+    padding: 20px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 20px 44px -20px rgba(20,17,12,0.35);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .chat-top {
+    display: flex; align-items: center; gap: 11px;
+    margin: -20px -18px 6px; padding: 13px 16px;
+    background: #075e54; color: #fff;
+    border-radius: 16px 16px 0 0;
+  }
+  .chat-top .av { width: 34px; height: 34px; border-radius: 50%; background: #cfd8d3; color: #075e54; display: grid; place-items: center; font-weight: 700; font-size: 15px; }
+  .chat-top .who { line-height: 1.2; }
+  .chat-top .who b { font-size: 15px; font-weight: 600; }
+  .chat-top .who span { font-size: 12px; opacity: 0.8; }
+  .bubble {
+    max-width: 82%; padding: 9px 12px 8px;
+    font-size: 15.5px; line-height: 1.4; color: #111;
+    border-radius: 9px; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+    position: relative;
+  }
+  .bubble .t { display: block; text-align: right; font-size: 11px; color: rgba(0,0,0,0.4); margin-top: 3px; }
+  .b-in  { align-self: flex-start; background: #fff; border-top-left-radius: 2px; }
+  .b-out { align-self: flex-end; background: #dcf8c6; border-top-right-radius: 2px; }
+  .b-sys {
+    align-self: center; background: #fff7d6; color: #6b5a1e;
+    font-size: 12.5px; font-weight: 500; padding: 6px 12px; border-radius: 8px; text-align: center;
+  }
+  .bank-mini {
+    margin-top: 7px; background: #fbfff5; border: 1px solid rgba(0,0,0,0.08);
+    border-left: 3px solid var(--gold); border-radius: 6px; padding: 8px 10px;
+  }
+  .bank-mini .lbl { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold-deep); font-weight: 700; }
+  .bank-mini .num { font-size: 17px; font-weight: 700; letter-spacing: 0.05em; color: #111; font-family: 'JetBrains Mono', monospace; }
+  .paid-line { display: inline-flex; align-items: center; gap: 6px; color: var(--success); font-weight: 600; }
+  .paid-line svg { width: 15px; height: 15px; }
+
+  /* ============ two-column layout ============ */
+  .cols { display: grid; gap: 56px; flex: 1; align-items: center; }
+  .cols.c-6040 { grid-template-columns: 1.1fr 0.9fr; }
+  .cols.c-5050 { grid-template-columns: 1fr 1fr; }
+  .cols.c-4060 { grid-template-columns: 0.85fr 1.15fr; }
+  .stack { display: flex; flex-direction: column; }
+
+  /* ============ point list ============ */
+  .points { display: flex; flex-direction: column; gap: 20px; margin-top: 6px; }
+  .point { display: flex; gap: 16px; align-items: flex-start; }
+  .point .pic {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 11px;
+    background: var(--gold-tint); color: var(--gold-deep);
+    display: grid; place-items: center;
+  }
+  .s-ink .point .pic { background: rgba(200,162,74,0.16); color: var(--gold); }
+  .point .pic svg { width: 22px; height: 22px; }
+  .point .ptxt b { display: block; font-size: 18px; font-weight: 600; margin-bottom: 3px; }
+  .point .ptxt span { font-size: 15.5px; line-height: 1.5; color: var(--muted); }
+  .s-ink .point .ptxt span { color: var(--muted-ink); }
+
+  /* ============ stat cards ============ */
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 8px; }
+  .stat {
+    background: var(--ink); color: #fff; border-radius: 16px; padding: 26px 24px;
+  }
+  .s-ink .stat { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+  .stat .n { font-size: 42px; font-weight: 700; color: var(--gold); letter-spacing: -0.02em; line-height: 1; }
+  .stat .l { font-size: 14.5px; line-height: 1.45; color: rgba(255,255,255,0.72); margin-top: 12px; }
+  .stat .tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); margin-top: 14px; }
+
+  /* ============ flow (solution) ============ */
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 46px; align-items: stretch; }
+  .flow-step { position: relative; padding: 0 22px; }
+  .flow-step:not(:last-child)::after {
+    content: ""; position: absolute; top: 27px; right: -12px; width: 24px; height: 24px;
+    border-top: 2px solid var(--gold); border-right: 2px solid var(--gold);
+    transform: rotate(45deg);
+  }
+  .flow-num {
+    width: 54px; height: 54px; border-radius: 14px;
+    background: var(--gold); color: var(--ink);
+    display: grid; place-items: center; margin-bottom: 20px;
+  }
+  .s-ink .flow-num { background: var(--gold); color: var(--ink); }
+  .flow-num svg { width: 26px; height: 26px; }
+  .flow-step h4 { font-size: 19px; font-weight: 600; margin-bottom: 8px; }
+  .flow-step p { font-size: 15px; line-height: 1.5; color: var(--muted); }
+  .s-ink .flow-step p { color: var(--muted-ink); }
+
+  /* ============ architecture ============ */
+  .arch { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin-top: 40px; align-items: start; }
+  .arch-node { position: relative; padding: 0 16px; text-align: center; }
+  .arch-node:not(:last-child)::after {
+    content: ""; position: absolute; top: 34px; right: -10px; width: 20px; height: 2px; background: var(--line-strong);
+  }
+  .arch-ic {
+    width: 68px; height: 68px; border-radius: 18px; margin: 0 auto 16px;
+    background: var(--white); border: 1.5px solid var(--line-strong);
+    display: grid; place-items: center; color: var(--gold-deep);
+  }
+  .arch-ic svg { width: 32px; height: 32px; }
+  .arch-node .step { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep); }
+  .arch-node h4 { font-size: 17px; font-weight: 600; margin: 6px 0 8px; }
+  .arch-node p { font-size: 13.5px; line-height: 1.45; color: var(--muted); }
+
+  /* ============ trust grid ============ */
+  .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 34px; }
+  .trust-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px; padding: 16px 18px 18px;
+  }
+  .trust-card .tic { width: 34px; height: 34px; border-radius: 9px; background: rgba(200,162,74,0.16); color: var(--gold); display: grid; place-items: center; margin-bottom: 10px; }
+  .trust-card .tic svg { width: 18px; height: 18px; }
+  .trust-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 5px; }
+  .trust-card p { font-size: 13px; line-height: 1.45; color: rgba(255,255,255,0.62); }
+  .trust-card code { font-family: 'JetBrains Mono', monospace; color: var(--gold-soft); font-size: 13px; }
+
+  /* ============ market ============ */
+  .tam-wrap { display: flex; flex-direction: column; gap: 16px; }
+  .tam {
+    display: flex; align-items: center; gap: 22px;
+    border-radius: 14px; padding: 20px 26px; color: #fff;
+  }
+  .tam .tam-n { font-size: 34px; font-weight: 700; letter-spacing: -0.02em; font-family: 'JetBrains Mono', monospace; min-width: 150px; }
+  .tam .tam-t b { display: block; font-size: 16px; font-weight: 600; }
+  .tam .tam-t span { font-size: 13.5px; opacity: 0.7; }
+  .tam-1 { background: var(--ink); }
+  .tam-2 { background: var(--gold-deep); margin: 0 26px; }
+  .tam-3 { background: var(--gold); color: var(--ink); margin: 0 52px; }
+  .tam-3 .tam-t span { opacity: 0.7; }
+
+  /* ============ pricing ============ */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 38px; flex: 1; align-items: stretch; }
+  .price {
+    background: var(--white); border: 1.5px solid var(--line); border-radius: 18px;
+    padding: 30px 28px; display: flex; flex-direction: column;
+  }
+  .price.feat { background: var(--ink); border-color: var(--ink); color: #fff; transform: translateY(-8px); box-shadow: 0 30px 60px -30px rgba(20,17,12,0.5); }
+  .price .pname { font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold-deep); }
+  .price.feat .pname { color: var(--gold); }
+  .price .pprice { font-size: 40px; font-weight: 700; letter-spacing: -0.02em; margin: 14px 0 4px; }
+  .price .pprice small { font-size: 16px; font-weight: 500; color: var(--muted); }
+  .price.feat .pprice small { color: rgba(255,255,255,0.6); }
+  .price .pfor { font-size: 14.5px; color: var(--muted); margin-bottom: 20px; }
+  .price.feat .pfor { color: rgba(255,255,255,0.65); }
+  .price ul { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-top: 6px; }
+  .price li { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.4; color: var(--ink); }
+  .price.feat li { color: rgba(255,255,255,0.85); }
+  .price li svg { width: 17px; height: 17px; color: var(--gold-deep); flex-shrink: 0; margin-top: 1px; }
+  .price.feat li svg { color: var(--gold); }
+  .price .ptop { display: flex; align-items: center; justify-content: space-between; }
+  .price .pbadge { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; background: var(--gold); color: var(--ink); padding: 4px 9px; border-radius: 999px; }
+
+  /* ============ compare matrix ============ */
+  .matrix { margin-top: 34px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .matrix-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; align-items: center; }
+  .matrix-row + .matrix-row { border-top: 1px solid var(--line); }
+  .matrix-row.head { background: var(--paper); }
+  .matrix-row.head > div { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 16px 20px; }
+  .matrix-row.head .zp { color: var(--gold-deep); }
+  .matrix-row > div { padding: 17px 20px; font-size: 15.5px; }
+  .matrix-row .rl { font-weight: 600; }
+  .matrix-row .zp { background: var(--gold-tint); font-weight: 600; }
+  .cellmark { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14.5px; }
+  .cellmark.yes { color: var(--success); font-weight: 600; }
+  .cellmark svg { width: 17px; height: 17px; }
+
+  /* ============ roadmap ============ */
+  .road { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 36px; }
+  .road-col { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 28px 28px 30px; }
+  .road-col h4 { font-size: 15px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .road-col ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+  .road-col li { display: flex; gap: 12px; align-items: flex-start; font-size: 16px; line-height: 1.4; color: rgba(255,255,255,0.86); }
+  .road-col li svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+  .road-col.done li svg { color: var(--success); }
+  .road-col.next li svg { color: var(--gold); }
+
+  /* ============ close ============ */
+  .close-inner { justify-content: center; align-items: flex-start; }
+  .close-h { font-size: 78px; font-weight: 700; line-height: 1.0; letter-spacing: -0.035em; max-width: 18ch; }
+  .close-h .em { color: var(--gold); }
+  .close-sub { margin-top: 28px; font-size: 22px; color: var(--muted-ink); max-width: 46ch; line-height: 1.5; }
+  .close-cta { margin-top: 44px; display: inline-flex; align-items: center; gap: 14px; }
+  .close-cta .pill { background: var(--gold); color: var(--ink); font-weight: 600; font-size: 17px; padding: 15px 26px; border-radius: 12px; }
+  .close-cta .ghost { border: 1.5px solid rgba(255,255,255,0.4); color: #fff; font-weight: 500; font-size: 17px; padding: 15px 26px; border-radius: 12px; }
+
+  /* ============ print / PDF ============ */
+  @media print {
+    @page { size: 1280px 720px; margin: 0; }
+    html, body { background: #fff; width: 1280px; height: 720px; }
+    .deck { display: block; padding: 0; gap: 0; }
+    .slide { box-shadow: none; page-break-after: always; break-after: page; width: 1280px; height: 720px; }
+    .slide:last-child { page-break-after: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ============================ SLIDE 1 — COVER ============================ -->
+  <section class="slide s-ink">
+    <div class="cover-orbit"></div>
+    <div class="cover-chip c1">
+      <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+      <span>Payment confirmed<small>₦42,500 · auto-verified</small></span>
+    </div>
+    <div class="cover-chip c2">
+      <span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>
+      <span>Order ready to fulfil<small>while you were offline</small></span>
+    </div>
+    <div class="slide-inner cover-inner">
+      <div class="cover-brand">
+        <span class="zmark">Z</span>
+        <span class="wordmark">ZPay</span>
+      </div>
+      <div class="cover-kicker">Conversational commerce · powered by Monnify</div>
+      <h1 class="cover-h">Every chat is<br>a <span class="em">checkout.</span></h1>
+      <p class="cover-sub">An AI sales assistant that answers your customers, takes the payment, and confirms the order — right inside the conversation, day and night.</p>
+    </div>
+    <div class="cover-tag">Monnify Hackathon<br>2026</div>
+  </section>
+
+  <!-- ============================ SLIDE 2 — PROBLEM (STORY) ============================ -->
+  <section class="slide s-white">
+    <div class="slide-inner">
+      <span class="eyebrow">The problem</span>
+      <div class="cols c-6040">
+        <div class="stack">
+          <h2 class="headline">Meet Tola. She sells sneakers on Instagram.</h2>
+          <p class="sub" style="margin-top:22px">A customer messaged her at 9:14 PM, ready to buy. She was asleep. By morning, the sale had walked to whoever replied first.</p>
+          <p class="sub" style="margin-top:20px; color:var(--ink); font-weight:500; max-width:34ch;">Tola didn't lose the sale on price or product. She lost it on <span class="em">reply time.</span></p>
+        </div>
+        <div class="chat">
+          <div class="chat-top">
+            <span class="av">C</span>
+            <span class="who"><b>Chidi</b><span>online</span></span>
+          </div>
+          <div class="bubble b-in">Is the size 43 still available? 👀<span class="t">9:14 PM</span></div>
+          <div class="bubble b-in">I can pay now<span class="t">9:14 PM</span></div>
+          <div class="b-sys">Seen 9:52 AM · 12 hours later</div>
+          <div class="bubble b-out">So sorry, just seeing this! Yes it's available 🙏<span class="t">9:52 AM</span></div>
+          <div class="bubble b-in">No wahala. I already bought from someone else.<span class="t">9:53 AM</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">02 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 3 — WHY IT KEEPS HAPPENING ============================ -->
+  <section class="slide s-ivory">
+    <div class="slide-inner">
+      <span class="eyebrow">Why it keeps happening</span>
+      <div class="cols c-5050">
+        <div class="stack">
+          <h2 class="headline">Sellers are human. Buyers won't wait.</h2>
+          <div class="points">
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 2"/></svg></span>
+              <span class="ptxt"><b>Replies come late</b><span>Sleeping, driving, in church, or serving the customer in front of them — the message sits unread.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" d="M3 10h18"/></svg></span>
+              <span class="ptxt"><b>Payment is a manual chase</b><span>"Have you sent it?" · screenshots · refreshing bank alerts · matching names to amounts by hand.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
+              <span class="ptxt"><b>Every delay is an exit</b><span>Intent is highest the second a customer asks. Minutes later, it's gone to a faster seller.</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="stat-row" style="grid-template-columns:1fr;">
+            <div class="stat">
+              <div class="n">~30%</div>
+              <div class="l">of ready-to-buy customers abandon the purchase when the reply takes too long.</div>
+              <div class="tag">Widely-cited response-time estimate</div>
+            </div>
+            <div class="stat" style="background:var(--gold-deep);">
+              <div class="n" style="color:#fff;">Hours / week</div>
+              <div class="l">lost to answering the same questions and reconciling payments by hand — instead of selling.</div>
+              <div class="tag" style="color:rgba(255,255,255,0.6)">Time that doesn't scale</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">03 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 4 — SOLUTION ============================ -->
+  <section class="slide s-ink">
+    <div class="slide-inner">
+      <span class="eyebrow">The fix</span>
+      <h2 class="headline big" style="max-width:24ch;">ZPay replies, collects the payment, and confirms the order — <span class="em">while you're away.</span></h2>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z"/></svg></div>
+          <h4>Customer messages</h4>
+          <p>"I want 2 hoodies." Plain text, on the channel they already use.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></div>
+          <h4>AI answers instantly</h4>
+          <p>Confirms items and price, then sends a real account or checkout link.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+          <h4>Payment auto-verified</h4>
+          <p>Monnify webhooks confirm the money landed. No screenshots, no guessing.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 0 0-4-5.7V5a2 2 0 1 0-4 0v.3A6 6 0 0 0 6 11v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1"/></svg></div>
+          <h4>You're notified</h4>
+          <p>One alert: order paid and ready to fulfil. That's the only time you step in.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">04 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 5 — HOW IT WORKS ============================ -->
+  <section class="slide s-white">
+    <div class="slide-inner">
+      <span class="eyebrow">How it works</span>
+      <div class="cols c-4060">
+        <div class="chat">
+          <div class="chat-top">
+            <span class="av" style="background:var(--ink); color:var(--gold);">Z</span>
+            <span class="who"><b>ZPay Assistant</b><span>online · replies instantly</span></span>
+          </div>
+          <div class="bubble b-out">I want 2 White Sneakers and a Black Hoodie<span class="t">3:02 PM</span></div>
+          <div class="bubble b-in">Got it — 2× White Sneakers, 1× Black Hoodie. Total <b>₦42,500</b>. Transfer to the account below and I'll confirm automatically 👇
+            <div class="bank-mini"><div class="lbl">Wema Bank · Reserved account</div><div class="num">7822 019 455</div></div>
+            <span class="t">3:02 PM</span>
+          </div>
+          <div class="b-sys">Customer transfers ₦42,500</div>
+          <div class="bubble b-in"><span class="paid-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Payment received — order confirmed.</span> A receipt is on the way, and the seller has been notified.<span class="t">3:03 PM</span></div>
+        </div>
+        <div class="stack">
+          <h2 class="headline" style="font-size:46px;">Plain text in.<br>Paid order out.</h2>
+          <div class="points" style="margin-top:26px;">
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h10M4 18h7"/></svg></span>
+              <span class="ptxt"><b>Reads the order like a person</b><span>Handles quantities, typos, and slang — no forms, no menus, no keywords to memorise.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path stroke-linecap="round" d="M3 10h18M7 15h4"/></svg></span>
+              <span class="ptxt"><b>Real Monnify payment rails</b><span>Generates a reserved bank account or a checkout link on the spot — not a mock.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span>
+              <span class="ptxt"><b>Confirmed without you</b><span>The webhook settles the payment, the order flips to paid, and a receipt goes out.</span></span>
+            </div>
+          </div>
+          <p class="sub" style="margin-top:24px; font-weight:500; color:var(--ink);">No app to download. No browser tab. The checkout <span class="em">is</span> the chat.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">05 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 6 — TECHNICALS (FOR NON-TECHNICALS) ============================ -->
+  <section class="slide s-ivory">
+    <div class="slide-inner">
+      <span class="eyebrow">Under the hood</span>
+      <h2 class="headline" style="max-width:26ch;">Five moving parts. One clean handoff.</h2>
+      <p class="sub" style="margin-top:16px;">Each piece does one job and passes the order to the next — the customer only ever sees the chat.</p>
+      <div class="arch">
+        <div class="arch-node">
+          <div class="arch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z"/></svg></div>
+          <div class="step">Step 1</div>
+          <h4>The chat</h4>
+          <p>WhatsApp today; Instagram &amp; Messenger next. Where customers already are.</p>
+        </div>
+        <div class="arch-node">
+          <div class="arch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3a4 4 0 0 1 4 4 4 4 0 0 1 0 8 4 4 0 0 1-8 0 4 4 0 0 1 0-8 4 4 0 0 1 4-4zM9 12h6"/></svg></div>
+          <div class="step">Step 2</div>
+          <h4>The AI reader</h4>
+          <p>Turns "2 hoodies" into a priced, itemised order it can act on.</p>
+        </div>
+        <div class="arch-node">
+          <div class="arch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.5-6.5-2 2m-7 7-2 2m11 0-2-2m-7-7-2-2"/><circle cx="12" cy="12" r="3.5"/></svg></div>
+          <div class="step">Step 3</div>
+          <h4>The ZPay engine</h4>
+          <p>Runs the conversation and the rules — what's in stock, what's owed, what's next.</p>
+        </div>
+        <div class="arch-node">
+          <div class="arch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path stroke-linecap="round" d="M3 10h18M7 15h4"/></svg></div>
+          <div class="step">Step 4</div>
+          <h4>Monnify</h4>
+          <p>Creates the account, moves the money, and confirms the moment it lands.</p>
+        </div>
+        <div class="arch-node">
+          <div class="arch-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 5h16v11H4zM9 20h6M12 16v4"/></svg></div>
+          <div class="step">Step 5</div>
+          <h4>Your console</h4>
+          <p>Every paid order, in one place — no bank-alert hunting required.</p>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:38px; font-size:16px;">Built on <b style="color:var(--ink)">Bun + TypeScript</b>, <b style="color:var(--ink)">Firestore</b>, and <b style="color:var(--ink)">Monnify</b> — with a decoupled WhatsApp listener so the chat never blocks the payment.</p>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">06 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 7 — PRODUCTION-GRADE / TRUST ============================ -->
+  <section class="slide s-ink">
+    <div class="slide-inner">
+      <span class="eyebrow">Correctness &amp; trust</span>
+      <h2 class="headline" style="max-width:24ch;">A hackathon build that behaves like production.</h2>
+      <p class="sub" style="margin-top:14px; font-size:16px; color:var(--gold-soft);">Every item on the Monnify production checklist — security, correctness, operations — is checked.</p>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 3v6c0 4-3 6.5-7 9-4-2.5-7-5-7-9V6z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/></svg></div>
+          <h4>Signed webhooks</h4>
+          <p>Every callback is verified with <code>HMAC-SHA512</code> against the raw body before anything is trusted.</p>
+        </div>
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V5a4 4 0 1 1 8 0v2m-9 0h10l1 12H6z"/></svg></div>
+          <h4>No double-charges</h4>
+          <p>Idempotency keys bind every transaction, so repeats are ignored, not re-run.</p>
+        </div>
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h11M4 12h16M4 17h9"/><circle cx="19" cy="7" r="2"/></svg></div>
+          <h4>Payment reconciliation</h4>
+          <p>Over- and under-payments are caught automatically, with refunds triggered on excess.</p>
+        </div>
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v4m0 10v4m9-9h-4M7 12H3m2.6-6.4 2.8 2.8m7.2 7.2 2.8 2.8m0-12.8-2.8 2.8m-7.2 7.2-2.8 2.8"/></svg></div>
+          <h4>Nightly reconciliation</h4>
+          <p>A scheduled job compares our ledger to Monnify's records and flags any drift.</p>
+        </div>
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM9 12l2 2 4-4"/></svg></div>
+          <h4>Secrets stay secret</h4>
+          <p>Keys load from environment variables only — nothing sensitive is ever committed.</p>
+        </div>
+        <div class="trust-card">
+          <div class="tic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12h4l2 5 4-12 2 7h6"/></svg></div>
+          <h4>Health you can ping</h4>
+          <p>A public <code>/health</code> endpoint reports live Monnify connectivity for judges to check.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">07 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 8 — MARKET / WHY NOW ============================ -->
+  <section class="slide s-white">
+    <div class="slide-inner">
+      <span class="eyebrow">The opportunity</span>
+      <div class="cols c-5050">
+        <div class="stack">
+          <h2 class="headline">Nigeria sells in the DMs.</h2>
+          <div class="points" style="margin-top:8px;">
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h8M8 14h5M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z"/></svg></span>
+              <span class="ptxt"><b>Chat is the storefront</b><span>Millions of small sellers run their whole business through WhatsApp and Instagram DMs.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 17l6-6 4 4 8-8M21 7v5h-5"/></svg></span>
+              <span class="ptxt"><b>Social commerce is growing</b><span>More buying moves into conversations every year — and none of it wants a checkout page.</span></span>
+            </div>
+            <div class="point">
+              <span class="pic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2 3 14h7l-1 8 10-12h-7z"/></svg></span>
+              <span class="ptxt"><b>Why now</b><span>AI is finally good enough to run the conversation, and Monnify provides the rails to settle it.</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="tam-wrap">
+            <div class="tam tam-1">
+              <span class="tam-n">40M+</span>
+              <span class="tam-t"><b>Nigerian MSMEs</b><span>the total market that sells and supports over chat</span></span>
+            </div>
+            <div class="tam tam-2">
+              <span class="tam-n">Millions</span>
+              <span class="tam-t"><b>Social-first sellers</b><span>already taking orders in WhatsApp &amp; Instagram DMs</span></span>
+            </div>
+            <div class="tam tam-3">
+              <span class="tam-n">Beachhead</span>
+              <span class="tam-t"><b>High-volume chat sellers</b><span>fashion, food, and beauty merchants we start with</span></span>
+            </div>
+          </div>
+          <p class="sub" style="margin-top:22px; font-size:14px;">Figures are directional market estimates, sized top-down — not audited counts.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">08 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 9 — PRICING ============================ -->
+  <section class="slide s-ivory">
+    <div class="slide-inner">
+      <span class="eyebrow">Pricing</span>
+      <h2 class="headline" style="max-width:30ch;">Simple to start. <span class="em">We earn when you sell.</span></h2>
+      <div class="price-grid">
+        <div class="price">
+          <div class="ptop"><span class="pname">Starter</span></div>
+          <div class="pprice">Free</div>
+          <div class="pfor">For the seller trying it on one channel.</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> 1 WhatsApp number</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Up to 50 confirmed orders / mo</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Monnify transaction fees only</li>
+          </ul>
+        </div>
+        <div class="price feat">
+          <div class="ptop"><span class="pname">Growth</span><span class="pbadge">Most popular</span></div>
+          <div class="pprice">₦9,500<small>/mo</small></div>
+          <div class="pfor">For the seller doing real volume.</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Everything in Starter, unlimited orders</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> + ₦40 per confirmed order</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Product catalog &amp; sales analytics</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Auto refunds &amp; reconciliation</li>
+          </ul>
+        </div>
+        <div class="price">
+          <div class="ptop"><span class="pname">Business</span></div>
+          <div class="pprice">Custom</div>
+          <div class="pfor">For teams and multi-channel brands.</div>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> WhatsApp, Instagram &amp; Messenger</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Multiple agents &amp; numbers</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Priority support &amp; onboarding</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">09 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 10 — WHY WE WIN ============================ -->
+  <section class="slide s-white">
+    <div class="slide-inner">
+      <span class="eyebrow">Why ZPay</span>
+      <h2 class="headline" style="max-width:28ch;">Conversation, payment, and reconciliation — in one place.</h2>
+      <div class="matrix">
+        <div class="matrix-row head">
+          <div>Approach</div>
+          <div>Replies 24/7</div>
+          <div>Takes payment</div>
+          <div class="zp">ZPay</div>
+        </div>
+        <div class="matrix-row">
+          <div class="rl">Replying in DMs by hand</div>
+          <div><span class="cellmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg> Only when awake</span></div>
+          <div><span class="cellmark">Manual chase</span></div>
+          <div class="zp"><span class="cellmark yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Automatic</span></div>
+        </div>
+        <div class="matrix-row">
+          <div class="rl">Generic chatbot</div>
+          <div><span class="cellmark yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Yes</span></div>
+          <div><span class="cellmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg> Talks, can't collect</span></div>
+          <div class="zp"><span class="cellmark yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Built in</span></div>
+        </div>
+        <div class="matrix-row">
+          <div class="rl">Sending a payment link</div>
+          <div><span class="cellmark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6l12 12M18 6L6 18"/></svg> No conversation</span></div>
+          <div><span class="cellmark yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Yes</span></div>
+          <div class="zp"><span class="cellmark yes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Verified &amp; reconciled</span></div>
+        </div>
+      </div>
+      <p class="sub" style="margin-top:30px; font-weight:500; color:var(--ink); max-width:70ch;">Others do one part. ZPay runs the whole sale — from the first question to a settled, reconciled order — on Monnify's rails.</p>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">10 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 11 — TRACTION & ROADMAP ============================ -->
+  <section class="slide s-ink">
+    <div class="slide-inner">
+      <span class="eyebrow">Where we are</span>
+      <h2 class="headline" style="max-width:26ch;">Built at this hackathon. Working today.</h2>
+      <div class="road">
+        <div class="road-col done">
+          <h4>Shipped</h4>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Chat → payment → confirmation, end to end</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> WhatsApp pairing — QR code or pairing code</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Monnify reserved accounts + checkout links</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Merchant console with live orders</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg> Automated reconciliation &amp; refunds</li>
+          </ul>
+        </div>
+        <div class="road-col next">
+          <h4>Next</h4>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Instagram &amp; Messenger channels</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Sales analytics &amp; buyer insights</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> Multi-agent shared inbox for teams</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg> One-tap catalog import</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="brand-mini"><span class="zmark">Z</span> <b>ZPay</b></span>
+      <span class="pageno">11 / 12</span>
+    </div>
+  </section>
+
+  <!-- ============================ SLIDE 12 — CLOSE ============================ -->
+  <section class="slide s-ink">
+    <div class="cover-orbit"></div>
+    <div class="slide-inner close-inner">
+      <div class="cover-brand" style="margin-bottom:40px;">
+        <span class="zmark">Z</span>
+        <span class="wordmark" style="font-size:26px; font-weight:700;">ZPay</span>
+      </div>
+      <h2 class="close-h">Turn every conversation into a <span class="em">customer.</span></h2>
+      <p class="close-sub">Conversational payments for the way Africa actually sells — powered by Monnify.</p>
+      <div class="close-cta">
+        <span class="pill">Start selling 24/7</span>
+        <span class="ghost">See it live</span>
+      </div>
+    </div>
+    <div class="cover-tag" style="bottom:64px;">Thank you, judges 🙏<br>Team Tonolee · 2026</div>
+  </section>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,847 @@
+/* ===========================================================
+   ZPay — Landing Page Design System
+   Fully self-contained & scoped under `.vpay-landing`.
+   Does NOT touch global tokens/buttons/modal used by the app.
+
+   Direction: timeless, editorial, premium fintech.
+   Flat colours only — NO gradients, glows, or glassmorphism.
+   Palette: black / white / champagne gold / warm ivory / sand.
+   Type: Rubik. Wide, breathing, full-width alternating sections.
+   =========================================================== */
+
+.vpay-landing {
+  /* ---- Scoped design tokens ---- */
+  --l-gold: #c8a24a;          /* champagne gold — primary accent */
+  --l-gold-deep: #a9862f;     /* darker gold for hover/borders */
+  --l-gold-soft: #e6d09a;     /* soft gold */
+  --l-gold-tint: #f2e2b8;     /* soft gold section wash — clearly gold */
+  --l-ivory: #efe4cf;         /* warm ivory section band */
+  --l-sand: #ece2cd;          /* light sand */
+  --l-sky: #cfe0ec;           /* soft sky blue (card accent) */
+
+  --l-ink: #14110c;           /* near-black text */
+  --l-ink-soft: #3d3931;
+  --l-muted: #6f6a60;
+  --l-line: #e2dccd;
+  --l-line-strong: #d3cab7;
+
+  --l-white: #ffffff;
+  --l-gray: #eae7df;          /* warm light-gray section band */
+  --l-warm-gray: #e2ded4;
+
+  --l-radius-sm: 10px;
+  --l-radius: 16px;
+  --l-radius-lg: 22px;
+
+  /* Elegant, soft shadows — no colour glow */
+  --l-shadow-sm: 0 1px 2px rgba(20, 17, 12, 0.05), 0 4px 12px rgba(20, 17, 12, 0.05);
+  --l-shadow: 0 10px 30px rgba(20, 17, 12, 0.08);
+  --l-shadow-lg: 0 40px 80px -30px rgba(20, 17, 12, 0.28);
+
+  --l-maxw: 1320px;
+
+  font-family: 'Rubik', system-ui, sans-serif;
+  color: var(--l-ink);
+  background: var(--l-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  line-height: 1.55;
+
+  /* Sits on top of the app's dark body and scrolls independently */
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.vpay-landing *,
+.vpay-landing *::before,
+.vpay-landing *::after {
+  box-sizing: border-box;
+}
+
+.vpay-landing h1,
+.vpay-landing h2,
+.vpay-landing h3,
+.vpay-landing h4 {
+  font-family: 'Rubik', sans-serif;
+  color: var(--l-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+  font-weight: 600;
+}
+
+.vpay-landing p { margin: 0; }
+
+/* Wide editorial container — generous horizontal breathing room */
+.vl-container {
+  width: 100%;
+  max-width: var(--l-maxw);
+  margin: 0 auto;
+  padding: 0 3.5rem;
+}
+
+/* ---------- Full-width alternating section backgrounds ---------- */
+.vl-section { padding: 7rem 0; }
+.vl-bg-white { background: var(--l-white); }
+.vl-bg-gray { background: var(--l-gray); }
+.vl-bg-ivory { background: var(--l-ivory); }
+.vl-bg-gold { background: var(--l-gold-tint); }
+.vl-bg-ink { background: var(--l-ink); }
+
+/* ---------- Buttons (scoped, flat) ---------- */
+.vl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 500;
+  font-size: 1.02rem;
+  line-height: 1;
+  padding: 1rem 1.7rem;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.vl-btn:active { transform: translateY(1px); }
+
+/* Primary — flat champagne gold */
+.vl-btn-primary {
+  background: var(--l-gold);
+  color: #1a1400;
+  font-weight: 600;
+}
+.vl-btn-primary:hover {
+  background: var(--l-gold-deep);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--l-shadow-sm);
+}
+
+/* Secondary — white with black border, minimal */
+.vl-btn-ghost {
+  background: var(--l-white);
+  color: var(--l-ink);
+  border-color: var(--l-ink);
+}
+.vl-btn-ghost:hover {
+  background: var(--l-ink);
+  color: var(--l-white);
+  transform: translateY(-2px);
+}
+
+.vl-btn-sm { padding: 0.72rem 1.25rem; font-size: 0.94rem; border-radius: 8px; }
+.vl-btn svg { width: 18px; height: 18px; }
+
+/* ---------- Header ---------- */
+.vl-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--l-white);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease;
+}
+.vl-header[data-scrolled='true'] { border-color: var(--l-line); }
+.vl-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 82px;
+}
+.vl-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: 'Rubik', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  color: var(--l-ink);
+}
+.vl-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: var(--l-ink);
+  color: var(--l-gold);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.vl-nav { display: flex; align-items: center; gap: 2.6rem; }
+.vl-nav-links { display: flex; align-items: center; gap: 2.2rem; }
+.vl-nav-links a {
+  color: var(--l-ink-soft);
+  text-decoration: none;
+  font-size: 0.98rem;
+  font-weight: 400;
+  transition: color 0.2s ease;
+}
+.vl-nav-links a:hover { color: var(--l-gold-deep); }
+.vl-header-actions { display: flex; align-items: center; gap: 0.75rem; }
+
+/* ---------- Hero ---------- */
+.vl-hero {
+  background: var(--l-white);
+  padding: 5.5rem 0 6rem;
+}
+.vl-hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 5rem;
+  align-items: center;
+}
+.vl-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--l-gold-tint);
+  border: 1px solid var(--l-gold-soft);
+  color: var(--l-gold-deep);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  margin-bottom: 1.8rem;
+}
+.vl-pill .vl-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--l-gold);
+}
+.vl-hero h1 {
+  font-size: clamp(2.7rem, 4.6vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.vl-hero h1 .vl-accent { color: var(--l-gold-deep); }
+.vl-hero-sub {
+  margin-top: 1.7rem;
+  font-size: 1.22rem;
+  line-height: 1.65;
+  color: var(--l-muted);
+  max-width: 560px;
+}
+.vl-hero-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.4rem;
+  flex-wrap: wrap;
+}
+.vl-trust {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2.6rem;
+  flex-wrap: wrap;
+}
+.vl-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.92rem;
+  color: var(--l-ink-soft);
+  font-weight: 400;
+}
+.vl-trust-item svg { width: 20px; height: 20px; color: var(--l-gold-deep); flex-shrink: 0; }
+
+/* ---------- Hero visual: phone + floating cards ---------- */
+.vl-hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 620px;
+}
+.vl-phone-float {
+  animation: vlFloat 6s ease-in-out infinite;
+}
+@keyframes vlFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+/* Realistic premium phone body */
+.vl-phone {
+  position: relative;
+  width: 320px;
+  height: 640px;
+  background: #0c0c0e;
+  border-radius: 46px;
+  padding: 12px;
+  box-shadow:
+    /* Layered ambient shadows — soft, diffused, floating above the page */
+    0 2px 6px rgba(20, 17, 12, 0.08),
+    0 12px 24px -6px rgba(20, 17, 12, 0.14),
+    0 30px 55px -18px rgba(20, 17, 12, 0.22),
+    0 60px 100px -35px rgba(20, 17, 12, 0.30),
+    /* Bezel edge + inner rim */
+    0 0 0 2px #26262a,
+    inset 0 0 0 2px #000;
+}
+.vl-phone-speaker {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 54px;
+  height: 6px;
+  border-radius: 3px;
+  background: #1c1c1f;
+  z-index: 3;
+}
+.vl-phone-cam {
+  position: absolute;
+  top: 19px;
+  left: calc(50% + 42px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1c1c1f;
+  z-index: 3;
+}
+.vl-phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 35px;
+  overflow: hidden;
+  background: #ece5dd; /* classic WhatsApp chat paper */
+  display: flex;
+  flex-direction: column;
+}
+
+/* iOS-style status bar */
+.vl-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px 6px;
+  background: #075e54;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.vl-sb-icons { display: inline-flex; align-items: center; gap: 5px; }
+.vl-sb-icons svg { height: 11px; width: auto; }
+
+/* WhatsApp conversation header */
+.vl-wa-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.75rem 0.6rem;
+  background: #075e54;
+  color: #fff;
+}
+.vl-wa-back { width: 20px; height: 20px; flex-shrink: 0; opacity: 0.95; }
+.vl-wa-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #cfd8d3;
+  color: #075e54;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+.vl-wa-peer { display: flex; flex-direction: column; line-height: 1.15; flex: 1; min-width: 0; }
+.vl-wa-peer strong { font-size: 0.9rem; font-weight: 600; }
+.vl-wa-peer span { font-size: 0.72rem; opacity: 0.85; }
+.vl-wa-actions { display: inline-flex; gap: 1rem; }
+.vl-wa-actions svg { width: 19px; height: 19px; opacity: 0.95; }
+
+/* Chat body */
+.vl-wa-body {
+  flex: 1;
+  padding: 0.85rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow-y: auto;
+  background-color: #ece5dd; /* classic flat WhatsApp chat paper */
+}
+.vl-wa-body::-webkit-scrollbar { width: 0; }
+
+.vl-msg {
+  position: relative;
+  max-width: 82%;
+  padding: 0.42rem 0.6rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #111;
+  box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+  animation: vlMsgPop 0.32s cubic-bezier(0.16, 1, 0.3, 1) both;
+  word-wrap: break-word;
+}
+@keyframes vlMsgPop {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.vl-msg-in {
+  align-self: flex-start;
+  background: #ffffff;
+  border-top-left-radius: 2px;
+}
+.vl-msg-out {
+  align-self: flex-end;
+  background: #dcf8c6; /* classic WhatsApp outgoing green bubble */
+  border-top-right-radius: 2px;
+}
+.vl-msg-time {
+  display: block;
+  text-align: right;
+  font-size: 0.58rem;
+  color: rgba(0, 0, 0, 0.42);
+  margin-top: 2px;
+}
+.vl-msg-bank {
+  margin-top: 0.5rem;
+  background: #fbfff5;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-left: 3px solid var(--l-gold);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+}
+.vl-msg-bank .vl-bank-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--l-gold-deep);
+  font-weight: 700;
+}
+.vl-msg-bank .vl-bank-num {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #111;
+}
+.vl-msg-system {
+  align-self: center;
+  background: #fff7d6;
+  color: #6b5a1e;
+  font-size: 0.66rem;
+  font-weight: 500;
+  padding: 0.32rem 0.7rem;
+  border-radius: 7px;
+  text-align: center;
+  box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+}
+.vl-msg-paid { display: inline-flex; align-items: center; gap: 0.35rem; }
+.vl-msg-paid svg { width: 13px; height: 13px; color: #1a8f3c; }
+
+/* typing indicator */
+.vl-typing {
+  align-self: flex-start;
+  background: #fff;
+  border-radius: 8px;
+  border-top-left-radius: 2px;
+  padding: 0.55rem 0.7rem;
+  display: inline-flex;
+  gap: 4px;
+  box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
+  animation: vlMsgPop 0.3s ease both;
+}
+.vl-typing span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #b6bcb2;
+  animation: vlBlink 1.2s infinite ease-in-out;
+}
+.vl-typing span:nth-child(2) { animation-delay: 0.2s; }
+.vl-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes vlBlink {
+  0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* WhatsApp composer bar */
+.vl-wa-composer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px 9px;
+  background: #ece5dd;
+}
+.vl-wa-input {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: #8a8f88;
+  font-size: 0.76rem;
+}
+.vl-wa-input svg { width: 17px; height: 17px; flex-shrink: 0; }
+.vl-wa-input span { flex: 1; }
+.vl-wa-send {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #075e54;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.vl-wa-send svg { width: 17px; height: 17px; }
+
+/* Floating flat cards around the phone */
+.vl-float-card {
+  position: absolute;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: var(--l-white);
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  box-shadow: var(--l-shadow);
+  padding: 0.85rem 1.05rem;
+}
+.vl-fc-1 { top: 8%; left: -4%; animation: vlFloat 6s ease-in-out infinite; }
+.vl-fc-2 { bottom: 10%; right: -6%; animation: vlFloat 7s ease-in-out infinite 0.6s; }
+.vl-fc-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: var(--l-gold-tint);
+  color: var(--l-gold-deep);
+}
+.vl-fc-icon svg { width: 20px; height: 20px; }
+.vl-fc-text { display: flex; flex-direction: column; line-height: 1.25; }
+.vl-fc-text strong { font-size: 0.86rem; font-weight: 600; color: var(--l-ink); }
+.vl-fc-text span { font-size: 0.74rem; color: var(--l-muted); }
+
+/* ---------- Social proof / logos ---------- */
+.vl-logos { padding: 3rem 0; border-top: 1px solid var(--l-line); border-bottom: 1px solid var(--l-line); }
+.vl-logos-label {
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--l-muted);
+  margin-bottom: 1.8rem;
+}
+.vl-logos-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3.5rem;
+  flex-wrap: wrap;
+}
+.vl-logos-row span {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--l-ink);
+  opacity: 0.4;
+  letter-spacing: -0.01em;
+  transition: opacity 0.2s ease;
+}
+.vl-logos-row span:hover { opacity: 0.8; }
+
+/* ---------- Section heading ---------- */
+.vl-section-head {
+  max-width: 780px;
+  margin: 0 auto 3.5rem;
+  text-align: center;
+}
+.vl-eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--l-gold-deep);
+  margin-bottom: 1rem;
+}
+.vl-section-head h2 {
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  font-weight: 600;
+}
+
+/* ---------- Problem / story ---------- */
+.vl-problem-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 4rem;
+  align-items: start;
+}
+.vl-steps { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.5rem; }
+.vl-step {
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+}
+.vl-step-num {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--l-white);
+  border: 1px solid var(--l-line-strong);
+  color: var(--l-gold-deep);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.vl-step p { font-size: 1.02rem; line-height: 1.6; color: var(--l-ink-soft); }
+.vl-step p strong { color: var(--l-ink); font-weight: 600; }
+
+.vl-stat-cards { display: flex; flex-direction: column; gap: 1.25rem; position: sticky; top: 110px; }
+.vl-stat-card {
+  background: var(--l-ink);
+  color: var(--l-white);
+  border-radius: var(--l-radius);
+  padding: 2rem 1.75rem;
+}
+.vl-stat-num {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--l-gold);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+}
+.vl-stat-label { font-size: 0.95rem; line-height: 1.55; color: rgba(255, 255, 255, 0.7); }
+
+/* ---------- Solution band ---------- */
+.vl-solution {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  background: var(--l-white);
+  border: 1px solid var(--l-line);
+  border-radius: var(--l-radius-lg);
+  padding: 3.5rem;
+  /* Soft layered resting shadow so the box floats above the ivory section */
+  box-shadow:
+    0 2px 4px rgba(20, 17, 12, 0.04),
+    0 12px 28px -12px rgba(20, 17, 12, 0.12),
+    0 30px 60px -30px rgba(20, 17, 12, 0.22);
+}
+.vl-solution-copy .vl-eyebrow { margin-bottom: 0.9rem; }
+.vl-solution-copy h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 600; margin-bottom: 1.3rem; }
+.vl-solution-copy p { font-size: 1.08rem; line-height: 1.7; color: var(--l-muted); }
+.vl-solution-copy p + p { margin-top: 1rem; }
+
+/* Vertical flow diagram (flat) */
+.vl-flow { display: flex; flex-direction: column; gap: 0; }
+.vl-flow-node {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--l-ivory);
+  border: 1px solid var(--l-line);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--l-ink);
+}
+.vl-flow-ic {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: var(--l-white);
+  border: 1px solid var(--l-line-strong);
+  color: var(--l-gold-deep);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.vl-flow-ic svg { width: 21px; height: 21px; }
+.vl-flow-arrow {
+  width: 1.5px;
+  height: 22px;
+  background: var(--l-line-strong);
+  margin-left: 2rem;
+}
+
+/* ---------- Features ---------- */
+.vl-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+.vl-feature {
+  border: none;
+  border-radius: var(--l-radius-lg);
+  padding: 2.5rem 2.25rem;
+  /* Multi-layer resting shadow — reads as a physical card elevated above the page */
+  box-shadow:
+    0 1px 2px rgba(20, 17, 12, 0.06),
+    0 4px 8px -2px rgba(20, 17, 12, 0.08),
+    0 12px 22px -8px rgba(20, 17, 12, 0.14),
+    0 26px 50px -22px rgba(20, 17, 12, 0.28);
+}
+
+/* Each card its own flat solid colour */
+.vl-feature-sky { background: var(--l-sky); }
+.vl-feature-ivory { background: var(--l-ivory); }
+.vl-feature-gold { background: var(--l-gold-tint); }
+
+/* Illustration panel replaces the old icon tile */
+.vl-feature-art {
+  width: 100%;
+  height: 168px;
+  border-radius: var(--l-radius);
+  background: rgba(255, 255, 255, 0.55);
+  display: grid;
+  place-items: center;
+  margin-bottom: 1.6rem;
+  overflow: hidden;
+}
+.vl-feature-art svg { width: 78%; height: auto; display: block; }
+.vl-feature h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.7rem; }
+.vl-feature p { font-size: 0.98rem; line-height: 1.65; color: var(--l-ink-soft); }
+.vl-feature p + p { margin-top: 0.5rem; }
+
+/* ---------- Premium floating tilt (features + solution box) ---------- */
+.vl-tilt {
+  /* Tilt values written by the useTilt hook; default to rest. */
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --tilt-active: 0;
+  transform:
+    perspective(900px)
+    rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y))
+    translateY(calc(var(--tilt-active) * -3px));
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+/* Deepen the shadow while lifted to reinforce the float */
+.vl-feature.vl-tilt:hover {
+  box-shadow:
+    0 2px 4px rgba(20, 17, 12, 0.07),
+    0 8px 16px -4px rgba(20, 17, 12, 0.12),
+    0 20px 36px -12px rgba(20, 17, 12, 0.20),
+    0 44px 80px -28px rgba(20, 17, 12, 0.36);
+}
+.vl-solution.vl-tilt:hover {
+  box-shadow:
+    0 4px 8px rgba(20, 17, 12, 0.05),
+    0 22px 44px -16px rgba(20, 17, 12, 0.16),
+    0 48px 90px -36px rgba(20, 17, 12, 0.30);
+}
+
+/* Disable the 3D motion where it isn't wanted */
+@media (prefers-reduced-motion: reduce) {
+  .vl-tilt {
+    transform: none;
+    transition: box-shadow 0.2s ease;
+  }
+}
+/* Touch / coarse pointers: no tilt, keep it flat and stable */
+@media (hover: none), (pointer: coarse) {
+  .vl-tilt { transform: none; }
+}
+
+/* ---------- Final CTA (flat ink block) ---------- */
+.vl-cta {
+  background: var(--l-ink);
+  border-radius: var(--l-radius-lg);
+  padding: 5rem 3rem;
+  text-align: center;
+  color: var(--l-white);
+}
+.vl-cta-inner { max-width: 720px; margin: 0 auto; }
+.vl-cta h2 {
+  color: var(--l-white);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  font-weight: 600;
+}
+.vl-cta p { color: rgba(255, 255, 255, 0.7); font-size: 1.15rem; margin-top: 1.2rem; }
+.vl-cta-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.4rem;
+  flex-wrap: wrap;
+}
+.vl-cta .vl-btn-ghost {
+  background: transparent;
+  color: var(--l-white);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+.vl-cta .vl-btn-ghost:hover { background: var(--l-white); color: var(--l-ink); border-color: var(--l-white); }
+
+/* ---------- Footer ---------- */
+.vl-footer { padding: 4rem 0 3rem; background: var(--l-white); border-top: 1px solid var(--l-line); }
+.vl-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.vl-footer .vl-brand { font-size: 1.3rem; }
+.vl-footer-copy { font-size: 0.9rem; color: var(--l-muted); }
+
+/* ---------- Scroll reveal ---------- */
+.vl-reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.vl-reveal.vl-in { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vl-reveal { opacity: 1; transform: none; transition: none; }
+  .vl-phone-float, .vl-float-card { animation: none; }
+  .vl-msg, .vl-typing { animation: none; }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1080px) {
+  .vl-container { padding: 0 2.25rem; }
+  .vl-hero-grid { gap: 3rem; }
+  .vl-float-card { display: none; } /* keep the phone clean on medium screens */
+}
+
+@media (max-width: 900px) {
+  .vl-hero { padding: 3.5rem 0 4rem; }
+  .vl-hero-grid { grid-template-columns: 1fr; gap: 3.5rem; text-align: center; }
+  .vl-hero-sub { margin-left: auto; margin-right: auto; }
+  .vl-hero-actions, .vl-trust { justify-content: center; }
+  .vl-hero-visual { min-height: auto; }
+  .vl-section { padding: 5rem 0; }
+  .vl-solution { grid-template-columns: 1fr; padding: 2.5rem; gap: 2.5rem; }
+  .vl-problem-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .vl-stat-cards { position: static; }
+  .vl-features { grid-template-columns: 1fr 1fr; }
+  .vl-nav-links { display: none; }
+}
+
+@media (max-width: 620px) {
+  .vl-container { padding: 0 1.35rem; }
+  .vl-section { padding: 4rem 0; }
+  .vl-hero h1 { font-size: 2.5rem; }
+  .vl-features { grid-template-columns: 1fr; }
+  .vl-logos-row { gap: 1.75rem; }
+  .vl-logos-row span { font-size: 1rem; }
+  .vl-solution, .vl-cta { padding: 2rem 1.4rem; }
+  .vl-hero-actions .vl-btn { flex: 1 1 100%; }
+  .vl-stat-num { font-size: 2rem; }
+}

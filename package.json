@@ -1,0 +1,33 @@
+{
+  "name": "zpay",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "dev:client": "cd client && bunx vite",
+    "build": "cd client && bun install && bunx vite build",
+    "start": "bun src/index.ts",
+    "restart": "npx kill-port 3000 && bun run build && bun src/index.ts",
+    "seed": "bun scripts/seed-mock.ts",
+    "test": "bun test",
+    "test:run": "bun test",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@hapi/boom": "^10.0.1",
+    "@openrouter/sdk": "^0.13.21",
+    "@whiskeysockets/baileys": "^7.0.0-rc13",
+    "firebase-admin": "^14.1.0",
+    "husky": "^9.1.7",
+    "pino": "^10.3.1",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

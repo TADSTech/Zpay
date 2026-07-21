@@ -44,8 +44,6 @@ export default function DeveloperPage() {
   // Poll connection status while this page is mounted — cheap enough for a
   // settings panel, and the only way to notice a QR scan / pairing / drop.
   useEffect(() => {
-    if (isMock) return;
-
     let cancelled = false;
     const poll = async () => {
       try {
@@ -64,10 +62,9 @@ export default function DeveloperPage() {
       cancelled = true;
       clearInterval(interval);
     };
-  }, [isMock]);
+  }, []);
 
   const handleConnectWhatsApp = async () => {
-    if (isMock) return;
 
     setConnectingWhatsApp(true);
     try {
@@ -88,7 +85,6 @@ export default function DeveloperPage() {
   };
 
   const handleDisconnectWhatsApp = async () => {
-    if (isMock) return;
     if (!window.confirm("Are you sure you want to disconnect this WhatsApp instance? This will clear all active chat slots!")) return;
 
     setDisconnectingWhatsApp(true);
@@ -319,7 +315,6 @@ export default function DeveloperPage() {
                   value={waPhoneInput}
                   onChange={e => setWaPhoneInput(e.target.value)}
                   placeholder="e.g. 2348030000000"
-                  disabled={isMock}
                 />
               </div>
             )}
@@ -331,7 +326,7 @@ export default function DeveloperPage() {
                   className="btn btn-primary"
                   style={{ flex: 1 }}
                   onClick={handleConnectWhatsApp}
-                  disabled={connectingWhatsApp || isMock || waState.status === 'connecting' || waState.status === 'qr' || waState.status === 'pairing'}
+                  disabled={connectingWhatsApp || waState.status === 'connecting' || waState.status === 'qr' || waState.status === 'pairing'}
                 >
                   {connectingWhatsApp ? 'Starting...' : 'Connect WhatsApp'}
                 </button>
@@ -342,7 +337,7 @@ export default function DeveloperPage() {
                   className="btn btn-secondary"
                   style={{ flex: 1 }}
                   onClick={handleDisconnectWhatsApp}
-                  disabled={disconnectingWhatsApp || isMock}
+                  disabled={disconnectingWhatsApp}
                 >
                   {disconnectingWhatsApp ? 'Disconnecting...' : 'Disconnect WhatsApp & Reset Slots'}
                 </button>

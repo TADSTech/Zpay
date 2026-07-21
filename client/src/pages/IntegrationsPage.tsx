@@ -81,10 +81,6 @@ export default function IntegrationsPage() {
     
     // Check if the merchant's WhatsApp session is paired on load
     const checkStatus = async () => {
-      if (user.isMock) {
-        setWhatsappStatus('connected');
-        return;
-      }
       try {
         const data = await apiGet<{ success: boolean; status?: string }>('/api/whatsapp/status');
         setWhatsappStatus(data.success && data.status === 'connected' ? 'connected' : 'disconnected');

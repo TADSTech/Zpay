@@ -61,6 +61,12 @@ export async function handleParseOrder(req: Request): Promise<Response> {
 
     if (paymentType === "transfer") {
       virtualAccount = (await createVirtualAccount(orderId, parsed.totalAmount, customerName || "Customer", customCreds)) || null;
+      try {
+        const checkoutData = await createCheckoutOrder(orderId, parsed.totalAmount, customerName || "Customer", customCreds);
+        checkoutLink = checkoutData.checkoutUrl || null;
+      } catch (e) {
+        console.warn("[parse-order] Non-fatal checkout link generation warning:", e);
+      }
     } else {
       const checkoutData = await createCheckoutOrder(orderId, parsed.totalAmount, customerName || "Customer", customCreds);
       checkoutLink = checkoutData.checkoutUrl || null;

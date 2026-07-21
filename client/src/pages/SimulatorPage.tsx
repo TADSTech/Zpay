@@ -102,10 +102,12 @@ export default function SimulatorPage() {
         setCurrentOrder(data.order);
         let responseStr = `Order **#${data.order.id}** created for ${formatCurrency(data.order.totalAmount)}.\n\n`;
         
-        if (data.order.paymentMethod === 'transfer' && data.order.virtualAccount) {
-          responseStr += `Monnify Reserved Account generated:\n**Bank**: ${data.order.virtualAccount.bankName}\n**Number**: ${data.order.virtualAccount.accountNumber}`;
-        } else if (data.order.checkoutLink) {
-          responseStr += `Payment Web Link generated:\n[Open Monnify Web checkout](${data.order.checkoutLink})`;
+        if (data.order.virtualAccount) {
+          responseStr += `🏦 **Monnify Reserved Account:**\n**Bank**: ${data.order.virtualAccount.bankName}\n**Number**: ${data.order.virtualAccount.accountNumber}\n**Name**: ${data.order.virtualAccount.accountName}\n\n`;
+        }
+
+        if (data.order.checkoutLink) {
+          responseStr += `💳 **Monnify Payment Link:**\n[Open Monnify Web Checkout](${data.order.checkoutLink})`;
         }
         addMessage('bot', responseStr);
       } else {
@@ -356,7 +358,7 @@ export default function SimulatorPage() {
                 </div>
               </div>
 
-              {currentOrder.paymentMethod === 'transfer' && currentOrder.virtualAccount ? (
+              {currentOrder.virtualAccount && (
                 <div className="sim-va-box">
                   <div className="sim-va-label">Virtual Account</div>
                   <div className="sim-va-bank">{currentOrder.virtualAccount.bankName}</div>
@@ -370,7 +372,21 @@ export default function SimulatorPage() {
                     {simulating ? 'Processing...' : 'Simulate Bank Transfer'}
                   </button>
                 </div>
-              ) : (
+              )}
+
+              {currentOrder.checkoutLink && (
+                <div style={{ marginTop: '0.75rem' }}>
+                  <a
+                    href={currentOrder.checkoutLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-launch-app btn-full"
+                    style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', textDecoration: 'none', textAlign: 'center' }}
+                  >
+                    🔗 Open Monnify Payment Link
+                  </a>
+                </div>
+              )}
                 <div className="sim-card-form">
                   <div className="sim-card-label">Card Payment</div>
                   <div className="sim-card-inputs">
@@ -401,7 +417,6 @@ export default function SimulatorPage() {
                     {simulating ? 'Processing...' : 'Authorize Card Payment'}
                   </button>
                 </div>
-              )}
             </div>
           )}
         </section>

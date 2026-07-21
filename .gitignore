@@ -3,6 +3,7 @@ node_modules
 
 # output
 out
+dist
 *.tgz
 
 # code coverage
@@ -42,6 +43,10 @@ Zpay.pptx
 
 # env example (not a secret, but don't want it in the way)
 .env.example
+
+# legacy files
+public/
+start-dev.ps1
 
 # test output
 test-results/

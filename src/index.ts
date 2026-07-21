@@ -132,18 +132,6 @@ Bun.serve({
       // dist not built yet
     }
 
-    // Fallback: try old public/ directory for dev compatibility
-    try {
-      if (url.pathname === "/" || url.pathname === "/index.html") {
-        const htmlFile = Bun.file("./public/index.html");
-        if (await htmlFile.exists()) {
-          return new Response(htmlFile, { headers: { "Content-Type": "text/html" } });
-        }
-      }
-    } catch {
-      // ignore
-    }
-
     return new Response("Not Found — Run 'bun run build' to generate the frontend.", { status: 404 });
   },
 });

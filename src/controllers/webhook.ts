@@ -61,10 +61,11 @@ export async function handleWebhook(req: Request): Promise<Response> {
 
     if (orderRef && orderRef.startsWith("ZPY_")) {
       // Order reference format: ZPY_<merchantUid>_<randomBits>
+      // UIDs may contain underscores, so join all middle parts
       const parts = orderRef.split("_");
       
       if (parts.length >= 3) {
-        const merchantUid = parts[1];
+        const merchantUid = parts.slice(1, -1).join("_");
         const orderDocRef = db.collection("merchants").doc(merchantUid).collection("orders").doc(orderRef);
 
         console.log(`[webhook] merchantTxRef=${orderRef} merchantUid=${merchantUid} status=${status}`);

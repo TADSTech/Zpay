@@ -36,9 +36,15 @@ function formatCurrency(amount: number): string {
   return '₦' + amount.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+const SUGGESTIONS = [
+  'I want 2 White Sneakers and a Black Hoodie',
+  'A Large Pizza and 2 Cokes',
+  '3 packs of Diapers (Size 5)',
+];
+
 export default function SimulatorPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: 'init', sender: 'system', text: 'Welcome! System initialized. Try typing a purchase order below.' },
+    { id: 'init', sender: 'system', text: 'Welcome! Try typing an order below or tap a suggestion.' },
   ]);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [customerName, setCustomerName] = useState('Chidi');
@@ -47,7 +53,7 @@ export default function SimulatorPage() {
   const [sending, setSending] = useState(false);
   const [simulating, setSimulating] = useState(false);
   const [modalInfo, setModalInfo] = useState<{ title: string; message: string } | null>(null);
-  const [pan, setPan] = useState('5061081111111111'); // Standard test card default
+  const [pan, setPan] = useState('5061081111111111');
   const [expiry, setExpiry] = useState('12/28');
   const [cvv, setCvv] = useState('123');
   const [pin, setPin] = useState('1234');
@@ -69,16 +75,15 @@ export default function SimulatorPage() {
     setMessages(prev => prev.filter(m => m.id !== id));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const message = chatInput.trim();
+  const handleSubmit = async (messageOverride?: string) => {
+    const message = (messageOverride || chatInput).trim();
     if (!message || sending) return;
 
     addMessage('user', message, customerName);
     setChatInput('');
     setSending(true);
 
-    const thinkingId = addMessage('system', 'ZPay AI Agent is parsing order and calling Monnify Sandbox Checkout...');
+    const thinkingId = addMessage('system', 'ZPay AI is parsing your order...');
 
     try {
       const historyToSend = messages.filter(m => m.sender !== 'system').map(m => ({ sender: m.sender, text: m.text }));
@@ -128,8 +133,8 @@ export default function SimulatorPage() {
       if (data.success) {
         addMessage('bot', `[Simulated Callback] Monnify successfully posted webhook notification for #${id}. Payment settled.`);
         setModalInfo({
-          title: 'Incoming Transfer Received 🎉',
-          message: `Awesome! We just received a simulated webhook that a customer transferred money to the Reserved Account for Order #${id}. The transaction is verified and marked as PAID.`,
+          title: 'Payment Received',
+          message: `Simulated webhook received. A customer transferred funds to the Reserved Account for Order #${id}. Transaction verified and marked as PAID.`,
         });
         setCurrentOrder(null);
       }
@@ -150,266 +155,253 @@ export default function SimulatorPage() {
       expiryMonth: expMonth,
       expiryYear: expYear ? `20${expYear}` : '2028',
       cvv,
-      pin
+      pin,
     };
 
     try {
       const data = await apiPost<{ success: boolean; error?: string }>('/api/pay-card', {
         orderId: currentOrder.id,
-        cardDetails
+        cardDetails,
       });
 
       if (data.success) {
         addMessage('bot', `[Card Payment] Direct sandbox card charge API returned success for #${currentOrder.id}. Order marked as PAID.`);
         setModalInfo({
-          title: 'Card Payment Success 💳',
-          message: `Successfully processed card payment directly via Monnify Sandbox API for Order #${currentOrder.id}! The order status is updated to PAID.`,
+          title: 'Card Payment Successful',
+           message: `Card payment processed via sandbox API for Order #${currentOrder.id}. Order status updated to PAID.`,
         });
         setCurrentOrder(null);
       } else {
-        alert(data.error || 'Card processing failed');
+        setModalInfo({ title: 'Payment Failed', message: data.error || 'Card processing failed' });
       }
-    } catch (err: any) {
-      console.error('Card payment error:', err);
-      alert(err.message || 'Card payment failed');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'Card payment failed';
+      setModalInfo({ title: 'Payment Failed', message: msg });
     } finally {
       setSimulating(false);
     }
   };
-
 
   const renderMessageText = (text: string) => {
     const html = text
       .replace(/\n/g, '<br>')
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    return <div className="msg-html" dangerouslySetInnerHTML={{ __html: html }} />;
   };
 
   return (
     <div className="view-panel" id="panel-simulator">
-      <div className="simulator-grid">
+      <div className="sim-layout">
         {/* Chat Panel */}
-        <section className="panel simulator-panel">
-          <div className="panel-header">
-            <h3>Conversational Checkout Simulator</h3>
-            <p>Type a natural message to simulate a customer order.</p>
+        <section className="sim-chat-panel">
+          <div className="sim-chat-header">
+            <div className="sim-chat-header-left">
+              <div className="sim-chat-avatar">Z</div>
+              <div>
+                <strong>ZPay AI Sales Assistant</strong>
+                <span>Online · Replies instantly</span>
+              </div>
+            </div>
+            <div className="sim-chat-badge">Sandbox</div>
           </div>
 
-          <div className="chat-container">
-            <div className="chat-messages" id="chatMessages">
-              {messages.map(msg => (
-                <div key={msg.id} className={`msg ${msg.sender}`}>
-                  <div className="msg-header">
-                    {msg.sender === 'user' ? msg.name || 'Customer' : msg.sender === 'bot' ? 'ZPay Engine' : 'System'}
+          <div className="sim-chat-messages" id="chatMessages">
+            {messages.map(msg => (
+              <div key={msg.id} className={`sim-msg sim-msg-${msg.sender}`}>
+                {msg.sender === 'user' && <div className="sim-msg-name">{msg.name || 'Customer'}</div>}
+                {msg.sender === 'bot' && (
+                  <div className="sim-msg-name">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                      <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                      <line x1="6" y1="6" x2="6.01" y2="6" />
+                      <line x1="6" y1="18" x2="6.01" y2="18" />
+                    </svg>
+                    ZPay Engine
                   </div>
-                  <div className="msg-body">{renderMessageText(msg.text)}</div>
+                )}
+                <div className="sim-msg-bubble">{renderMessageText(msg.text)}</div>
+                {msg.sender !== 'system' && <span className="sim-msg-time">just now</span>}
+              </div>
+            ))}
+            {sending && (
+              <div className="sim-msg sim-msg-bot">
+                <div className="sim-msg-name">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+                    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+                    <line x1="6" y1="6" x2="6.01" y2="6" />
+                    <line x1="6" y1="18" x2="6.01" y2="18" />
+                  </svg>
+                  ZPay Engine
                 </div>
-              ))}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <form className="chat-form" onSubmit={handleSubmit} id="chatForm">
-              <div className="input-row">
-                <div className="input-group">
-                  <input
-                    type="text"
-                    id="customerName"
-                    placeholder="Customer Name (e.g. Chidi)"
-                    value={customerName}
-                    onChange={e => setCustomerName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="input-group" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--platinum-muted)' }}>Payment Type:</span>
-                  <div style={{ display: 'flex', gap: '0.25rem', background: 'rgba(255,255,255,0.05)', padding: '0.25rem', borderRadius: '6px' }}>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentType('transfer')}
-                      style={{
-                        padding: '0.35rem 0.75rem',
-                        fontSize: '0.85rem',
-                        border: paymentType === 'transfer' ? '2px solid var(--monnify-cyan)' : '2px solid transparent',
-                        borderRadius: '4px',
-                        background: paymentType === 'transfer' ? 'var(--monnify-cyan)' : 'transparent',
-                        color: paymentType === 'transfer' ? 'var(--bg-dark)' : 'var(--silver-text)',
-                        fontWeight: paymentType === 'transfer' ? 600 : 400,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxSizing: 'border-box'
-                      }}
-                    >
-                      Bank (Virtual Acct)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setPaymentType('card')}
-                      style={{
-                        padding: '0.35rem 0.75rem',
-                        fontSize: '0.85rem',
-                        border: paymentType === 'card' ? '2px solid var(--monnify-cyan)' : '2px solid transparent',
-                        borderRadius: '4px',
-                        background: paymentType === 'card' ? 'var(--monnify-cyan)' : 'transparent',
-                        color: paymentType === 'card' ? 'var(--bg-dark)' : 'var(--silver-text)',
-                        fontWeight: paymentType === 'card' ? 600 : 400,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxSizing: 'border-box'
-                      }}
-                    >
-                      Card
-                    </button>
-                  </div>
+                <div className="sim-msg-bubble">
+                  <span className="sim-typing">
+                    <span /><span /><span />
+                  </span>
                 </div>
               </div>
-              <div className="input-main">
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="sim-chat-input-area">
+            {messages.length <= 1 && (
+              <div className="sim-suggestions">
+                {SUGGESTIONS.map((s, i) => (
+                  <button key={i} className="sim-chip" onClick={() => { setChatInput(s); }}>
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="sim-input-bar">
+              <div className="sim-input-controls">
                 <input
                   type="text"
-                  id="chatMessage"
-                  placeholder="Type order (e.g., 'I want 2 White Sneakers and a Black Hoodie')"
+                  placeholder="Type an order here..."
                   value={chatInput}
                   onChange={e => setChatInput(e.target.value)}
-                  required
+                  onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(); } }}
+                  disabled={sending}
                 />
-                <button type="submit" className="btn-send" disabled={sending}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <button className="sim-send-btn" onClick={() => handleSubmit()} disabled={sending || !chatInput.trim()}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="22" y1="2" x2="11" y2="13" />
                     <polygon points="22 2 15 22 11 13 2 9 22 2" />
                   </svg>
                 </button>
               </div>
-            </form>
+              <div className="sim-payment-toggle">
+                <button
+                  className={`sim-toggle-btn ${paymentType === 'transfer' ? 'active' : ''}`}
+                  onClick={() => setPaymentType('transfer')}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <line x1="2" y1="10" x2="22" y2="10" />
+                  </svg>
+                  Bank Transfer
+                </button>
+                <button
+                  className={`sim-toggle-btn ${paymentType === 'card' ? 'active' : ''}`}
+                  onClick={() => setPaymentType('card')}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <line x1="2" y1="10" x2="22" y2="10" />
+                  </svg>
+                  Card
+                </button>
+                <div className="sim-customer-name">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M20 21a8 8 0 1 0-16 0" />
+                  </svg>
+                  <input
+                    type="text"
+                    value={customerName}
+                    onChange={e => setCustomerName(e.target.value)}
+                    placeholder="Name"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Checkout Display Panel */}
-        <section className="panel checkout-panel">
-          <div className="panel-header">
-            <h3>Monnify API Dynamic Checkout</h3>
-            <p>Verify generated transaction details and trigger sandbox responses.</p>
+        {/* Checkout Panel */}
+        <section className="sim-checkout-panel">
+          <div className="sim-checkout-header">
+            <h3>Checkout</h3>
+            <span className="sim-checkout-status">{currentOrder ? 'Active' : 'Awaiting Order'}</span>
           </div>
 
           {!currentOrder ? (
-            <div className="checkout-display empty" id="checkoutDisplayEmpty">
-              <div className="empty-state">
-                <div className="empty-icon">
-                  <svg fill="none" stroke="currentColor" strokeWidth="1.5" className="empty-svg" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                  </svg>
-                </div>
-                <p>Waiting for a chat order to generate checkout invoice details...</p>
+            <div className="sim-checkout-empty">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sim-empty-icon">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <line x1="2" y1="10" x2="22" y2="10" />
+              </svg>
+              <strong>No active checkout</strong>
+              <p>Send an order message in the chat to generate a Monnify checkout request with a virtual account or payment link.</p>
+              <div className="sim-empty-examples">
+                {SUGGESTIONS.map((s, i) => (
+                  <button key={i} className="sim-chip sim-chip-outline" onClick={() => { setChatInput(s); }}>
+                    {s}
+                  </button>
+                ))}
               </div>
             </div>
           ) : (
-            <div className="checkout-display" id="checkoutDisplay">
-              <div className="success-header">
-                <div className="success-check">✓</div>
-                <div>
-                  <h4>Checkout Request Built</h4>
-                  <p id="orderIdText">Ref: #{currentOrder.id}</p>
-                </div>
+            <div className="sim-checkout-active">
+              <div className="sim-checkout-order-header">
+                <div className="sim-checkout-id">#{currentOrder.id}</div>
+                <span className={`sim-checkout-pill ${currentOrder.status}`}>
+                  {currentOrder.status === 'paid' ? 'PAID' : 'PENDING'}
+                </span>
               </div>
 
-              <div className="checkout-details">
-                <div className="detail-section">
-                  <h5 style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--platinum-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.35rem' }}>
-                    Parsed Products
-                  </h5>
-                  <ul id="cartItemsList">
-                    {currentOrder.items.map((item, i) => (
-                      <li key={i}>
-                        <span>{item.qty}x {item.product}</span>
-                        <span>{formatCurrency(item.price * item.qty)}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="total-row">
-                    <span>Total:</span>
-                    <strong id="totalAmountText">{formatCurrency(currentOrder.totalAmount)}</strong>
+              <div className="sim-checkout-items">
+                {currentOrder.items.map((item, i) => (
+                  <div key={i} className="sim-checkout-item">
+                    <span className="sim-coi-name">{item.qty}x {item.product}</span>
+                    <span className="sim-coi-price">{formatCurrency(item.price * item.qty)}</span>
                   </div>
-                </div>
-
-                <div className="payment-action-box" id="paymentActionBox" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  {currentOrder.paymentMethod === 'transfer' && currentOrder.virtualAccount ? (
-                    <div className="virtual-acc-box">
-                      <span className="label">Simulated Bank Transfer Rails</span>
-                      <div className="bank-name">{currentOrder.virtualAccount.bankName}</div>
-                      <div className="acc-num">{currentOrder.virtualAccount.accountNumber}</div>
-                      <p className="acc-info">Virtual Name: {currentOrder.virtualAccount.accountName}</p>
-                      
-                      <button
-                        className="btn btn-primary btn-full"
-                        style={{ marginTop: '15px' }}
-                        onClick={() => handleSimulatePayment()}
-                        disabled={simulating}
-                      >
-                        {simulating ? 'Processing...' : 'Confirm Transfer from Bank App'}
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="card-checkout-box" style={{ padding: '1.25rem', background: 'var(--rich-black)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                      <span className="label" style={{ display: 'block', marginBottom: '15px', fontSize: '0.85rem', fontWeight: 600, textTransform: 'uppercase', color: 'var(--monnify-cyan)' }}>Direct Card Payment (Sandbox)</span>
-                      
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '15px' }}>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                          <label style={{ fontSize: '0.75rem', color: 'var(--platinum-muted)' }}>Card Number (PAN)</label>
-                          <input 
-                            type="text" 
-                            value={pan} 
-                            onChange={e => setPan(e.target.value)}
-                            placeholder="Card Number" 
-                            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--platinum)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.9rem' }}
-                          />
-                        </div>
-                        
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                            <label style={{ fontSize: '0.75rem', color: 'var(--platinum-muted)' }}>Expiry (MM/YY)</label>
-                            <input 
-                              type="text" 
-                              value={expiry} 
-                              onChange={e => setExpiry(e.target.value)}
-                              placeholder="MM/YY" 
-                              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--platinum)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.9rem' }}
-                            />
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                            <label style={{ fontSize: '0.75rem', color: 'var(--platinum-muted)' }}>CVV</label>
-                            <input 
-                              type="password" 
-                              maxLength={3}
-                              value={cvv} 
-                              onChange={e => setCvv(e.target.value)}
-                              placeholder="CVV" 
-                              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--platinum)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.9rem' }}
-                            />
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                            <label style={{ fontSize: '0.75rem', color: 'var(--platinum-muted)' }}>PIN</label>
-                            <input 
-                              type="password" 
-                              maxLength={4}
-                              value={pin} 
-                              onChange={e => setPin(e.target.value)}
-                              placeholder="PIN" 
-                              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--platinum)', padding: '0.5rem', borderRadius: '6px', fontSize: '0.9rem' }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <button
-                        className="btn btn-primary btn-full"
-                        onClick={handleCardPayment}
-                        disabled={simulating}
-                      >
-                        {simulating ? 'Charging Card...' : 'Authorize Sandbox Card Payment'}
-                      </button>
-                    </div>
-                  )}
+                ))}
+                <div className="sim-checkout-total">
+                  <span>Total</span>
+                  <strong>{formatCurrency(currentOrder.totalAmount)}</strong>
                 </div>
               </div>
+
+              {currentOrder.paymentMethod === 'transfer' && currentOrder.virtualAccount ? (
+                <div className="sim-va-box">
+                  <div className="sim-va-label">Virtual Account</div>
+                  <div className="sim-va-bank">{currentOrder.virtualAccount.bankName}</div>
+                  <div className="sim-va-number">{currentOrder.virtualAccount.accountNumber}</div>
+                  <div className="sim-va-name">{currentOrder.virtualAccount.accountName}</div>
+                  <button
+                    className="btn btn-primary btn-full"
+                    onClick={() => handleSimulatePayment()}
+                    disabled={simulating}
+                  >
+                    {simulating ? 'Processing...' : 'Simulate Bank Transfer'}
+                  </button>
+                </div>
+              ) : (
+                <div className="sim-card-form">
+                  <div className="sim-card-label">Card Payment</div>
+                  <div className="sim-card-inputs">
+                    <div className="sim-field">
+                      <label>Card Number</label>
+                      <input type="text" value={pan} onChange={e => setPan(e.target.value)} placeholder="5061 0811 1111 1111" />
+                    </div>
+                    <div className="sim-field-row">
+                      <div className="sim-field">
+                        <label>Expiry</label>
+                        <input type="text" value={expiry} onChange={e => setExpiry(e.target.value)} placeholder="MM/YY" />
+                      </div>
+                      <div className="sim-field">
+                        <label>CVV</label>
+                        <input type="password" maxLength={3} value={cvv} onChange={e => setCvv(e.target.value)} placeholder="123" />
+                      </div>
+                      <div className="sim-field">
+                        <label>PIN</label>
+                        <input type="password" maxLength={4} value={pin} onChange={e => setPin(e.target.value)} placeholder="1234" />
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    className="btn btn-primary btn-full"
+                    onClick={handleCardPayment}
+                    disabled={simulating}
+                  >
+                    {simulating ? 'Processing...' : 'Authorize Card Payment'}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </section>

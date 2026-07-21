@@ -192,7 +192,10 @@
 /* ---------- Hero ---------- */
 .vl-hero {
   background: var(--l-white);
-  padding: 5.5rem 0 6rem;
+  min-height: calc(100vh - 82px);
+  display: flex;
+  align-items: center;
+  padding: 3rem 0;
 }
 .vl-hero-grid {
   display: grid;
